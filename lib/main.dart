@@ -51,7 +51,8 @@ class _WebViewContainerState extends State<WebViewContainer> {
                 child: WebView(
                     key: _key,
                     javascriptMode: JavascriptMode.unrestricted,
-                    initialUrl: _url
+                    initialUrl: _url,
+                    userAgent: 'Buyzer App v1.0',
                 )
             )
           ],
