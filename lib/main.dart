@@ -1,5 +1,12 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:uni_links/uni_links.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+bool _initialURILinkHandled = false;
 
 void main() {
   runApp(const MyApp());
@@ -36,27 +43,103 @@ class WebViewContainer extends StatefulWidget {
   WebViewContainer(this.url);
 
   @override
-  createState() => _WebViewContainerState(this.url);
+  createState() => _WebViewContainerState();
 }
+
 class _WebViewContainerState extends State<WebViewContainer> {
-  var _url;
   final _key = UniqueKey();
-  _WebViewContainerState(this._url);
+  Uri? _initialURI;
+  Uri? _currentURI = Uri.tryParse("https://buyzer.pages.dev/");
+
+  StreamSubscription? _streamSubscription;
+
+  _WebViewContainerState();
+
+  Future<void> _initURIHandler() async {
+    if (!_initialURILinkHandled) {
+      _initialURILinkHandled = true;
+
+      try {
+        final initialURI = await getInitialUri();
+        // 4
+        if (initialURI != null) {
+          debugPrint("Initial URI received $initialURI");
+          if (!mounted) {
+            return;
+          }
+          setState(() {
+            _initialURI = initialURI;
+            _currentURI = _initialURI;
+          });
+        } else {
+          debugPrint("Null Initial URI received");
+        }
+      } on PlatformException {
+        debugPrint("Failed to receive initial uri");
+      } on FormatException {
+        // 6
+        if (!mounted) {
+          return;
+        }
+        debugPrint('Malformed Initial URI received');
+      }
+    }
+  }
+
+  void _incomingLinkHandler() {
+    // 1
+    if (!kIsWeb) {
+      // 2
+      _streamSubscription = uriLinkStream.listen((Uri? uri) {
+        if (!mounted) {
+          return;
+        }
+        debugPrint('Received URI: $uri');
+        setState(() {
+          _currentURI = uri;
+        });
+        // 3
+      }, onError: (Object err) {
+        if (!mounted) {
+          return;
+        }
+        debugPrint('Error occurred: $err');
+        setState(() {
+          _currentURI = null;
+          if (err is FormatException) {
+          } else {
+          }
+        });
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initURIHandler();
+    _incomingLinkHandler();
+  }
+
+  @override
+  void dispose() {
+    _streamSubscription?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(
-          children: [
-            Expanded(
-                child: WebView(
-                    key: _key,
-                    javascriptMode: JavascriptMode.unrestricted,
-                    initialUrl: _url,
-                    userAgent: 'Buyzer App v1.0',
-                )
-            )
-          ],
-        )
-    );
+      children: [
+        Expanded(
+            child: WebView(
+          key: _key,
+          javascriptMode: JavascriptMode.unrestricted,
+          initialUrl: _currentURI.toString(),
+          userAgent: 'Buyzer App v1.0',
+        ))
+      ],
+    ));
   }
 }
