@@ -18,26 +18,40 @@ class ListItem extends StatefulWidget {
 class ListItemState extends State<ListItem> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(left: BorderSide(color: widget.color, width: 4.0)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+    return InkWell(
+      child: IntrinsicHeight(
+        child: Row(
           children: [
-            Text(
-              widget.name,
-              style: Theme.of(context).typography.dense.headline6,
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(6), bottomRight: Radius.circular(6)),
+              child: Container(width: 4, color: widget.color),
             ),
-            if (widget.subtitle != null)
-              Text(widget.subtitle!,
-                  style: Theme.of(context)
-                      .typography
-                      .dense
-                      .subtitle1
-                      ?.copyWith(color: Colors.black.withOpacity(0.5))),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      widget.name,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    if (widget.subtitle != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2),
+                        child: Text(
+                          widget.subtitle!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              ?.copyWith(color: const Color(0xFFa5b7d1)),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
