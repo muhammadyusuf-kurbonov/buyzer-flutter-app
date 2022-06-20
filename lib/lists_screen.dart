@@ -5,6 +5,8 @@ import 'package:buyzer/list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import 'items_screen.dart';
+
 class ListsScreen extends StatelessWidget {
   const ListsScreen({Key? key}) : super(key: key);
 
@@ -31,6 +33,9 @@ class ListsScreen extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       itemCount: 25,
                       itemBuilder: (context, index) {
+                        var listColor = Color(
+                                (math.Random().nextDouble() * 0xFFFFFF).toInt())
+                            .withOpacity(1.0);
                         return Column(
                           children: [
                             Slidable(
@@ -57,13 +62,22 @@ class ListsScreen extends StatelessWidget {
                                     ),
                                   ]),
                               child: ListItem(
-                                  name: "Shop list $index",
-                                  color: Color((math.Random().nextDouble() *
-                                              0xFFFFFF)
-                                          .toInt())
-                                      .withOpacity(1.0),
-                                  subtitle: "Onions, Poptatos, Tomatos, " *
-                                      math.Random().nextInt(15)),
+                                name: "Shop list $index",
+                                color: listColor,
+                                subtitle: "Onions, Poptatos, Tomatos, " *
+                                    math.Random().nextInt(15),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return ItemsScreenRoute(
+                                        color: listColor,
+                                        name: "Shop list $index",
+                                      );
+                                    }),
+                                  );
+                                },
+                              ),
                             ),
                             const Divider(
                               height: 1,

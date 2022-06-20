@@ -4,9 +4,10 @@ class ListItem extends StatefulWidget {
   final String name;
   final Color color;
   final String? subtitle;
+  final void Function()? onTap;
 
   const ListItem(
-      {Key? key, required this.name, required this.color, this.subtitle})
+      {Key? key, required this.name, required this.color, this.subtitle, this.onTap})
       : super(key: key);
 
   @override
@@ -19,7 +20,7 @@ class ListItemState extends State<ListItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){},
+      onTap: widget.onTap,
       child: IntrinsicHeight(
         child: Row(
           children: [
