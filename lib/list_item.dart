@@ -19,6 +19,7 @@ class ListItemState extends State<ListItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onTap: (){},
       child: IntrinsicHeight(
         child: Row(
           children: [
