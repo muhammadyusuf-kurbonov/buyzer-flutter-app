@@ -1,8 +1,9 @@
+import 'dart:math' as math;
+
 import 'package:buyzer/header.dart';
 import 'package:buyzer/list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'dart:math' as math;
 
 class ListsScreen extends StatelessWidget {
   const ListsScreen({Key? key}) : super(key: key);
@@ -26,47 +27,50 @@ class ListsScreen extends StatelessWidget {
                 height: 1,
               ),
               Expanded(
-                child: ListView(
-                  children: List.generate(
-                    25,
-                    (index) => Column(
-                      children: [
-                        Slidable(
-                          endActionPane: ActionPane(
-                              motion: const DrawerMotion(),
-                              extentRatio: 0.4,
-                              dragDismissible: false,
-                              children: [
-                                SlidableAction(
-                                  onPressed: (context) {},
-                                  backgroundColor: const Color(0xFF39afd1),
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.edit_outlined,
-                                  spacing: 0,
-                                  padding: EdgeInsets.zero,
-                                ),
-                                SlidableAction(
-                                  onPressed: (context) {},
-                                  backgroundColor: const Color(0xFFe63757),
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.delete_outlined,
-                                  spacing: 0,
-                                  padding: EdgeInsets.zero,
-                                ),
-                              ]),
-                          child: ListItem(
-                              name: "Shop list $index",
-                              color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                              subtitle: "Onions, Poptatos, Tomatos, " * math.Random().nextInt(15)),
-                        ),
-                        const Divider(
-                          height: 1,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
+                  child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: 25,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Slidable(
+                              endActionPane: ActionPane(
+                                  motion: const DrawerMotion(),
+                                  extentRatio: 0.4,
+                                  dragDismissible: false,
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (context) {},
+                                      backgroundColor: const Color(0xFF39afd1),
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.edit_outlined,
+                                      spacing: 0,
+                                      padding: EdgeInsets.zero,
+                                    ),
+                                    SlidableAction(
+                                      onPressed: (context) {},
+                                      backgroundColor: const Color(0xFFe63757),
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.delete_outlined,
+                                      spacing: 0,
+                                      padding: EdgeInsets.zero,
+                                    ),
+                                  ]),
+                              child: ListItem(
+                                  name: "Shop list $index",
+                                  color: Color((math.Random().nextDouble() *
+                                              0xFFFFFF)
+                                          .toInt())
+                                      .withOpacity(1.0),
+                                  subtitle: "Onions, Poptatos, Tomatos, " *
+                                      math.Random().nextInt(15)),
+                            ),
+                            const Divider(
+                              height: 1,
+                            ),
+                          ],
+                        );
+                      }))
             ],
           ),
         ),

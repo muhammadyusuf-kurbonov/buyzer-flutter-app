@@ -27,7 +27,7 @@ void main() {
     ),
     home: const Scaffold(
       backgroundColor: Color(0xFFf9fbfd),
-      body: SafeArea(child: ListsScreen()),
+      body: SafeArea(top: false, child: ListsScreen()),
     ),
   ));
 }
