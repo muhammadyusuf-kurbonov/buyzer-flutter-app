@@ -1,6 +1,5 @@
-import 'dart:math' as math;
-
 import 'package:buyzer/list_item.dart';
+import 'package:buyzer/repository/items_reporitory.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -23,10 +22,11 @@ class ItemsScreenRoute extends StatelessWidget {
 }
 
 class ItemsScreen extends StatefulWidget {
-  const ItemsScreen({Key? key, required this.color, required this.name})
+  ItemsScreen({Key? key, required this.color, required this.name})
       : super(key: key);
   final Color color;
   final String name;
+  final items = ItemsRepository().items;
 
   @override
   State<StatefulWidget> createState() {
@@ -42,80 +42,93 @@ class ItemScreenState extends State<ItemsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 12, top: 12, bottom: 12),
-          child: Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back),
-              ),
-              Expanded(
-                child: Text(
-                  widget.name,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4
-                      ?.apply(color: widget.color),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const FaIcon(FontAwesomeIcons.userGroup),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+        Container(
+          color: widget.color,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+            child: Column(
               children: [
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Color(0xFFd2ddec), width: 1.0),
-                          borderRadius: BorderRadius.circular(6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      alignment: Alignment.topLeft,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const FaIcon(
+                        FontAwesomeIcons.arrowLeft,
+                        color: Colors.white,
+                        size: 22,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                          alignment: Alignment.topRight,
+                          onPressed: () {},
+                          icon: const FaIcon(
+                            FontAwesomeIcons.plus,
+                            color: Colors.white,
+                            size: 22,
+                          ),
+                        ),IconButton(
+                          alignment: Alignment.topRight,
+                          onPressed: () {},
+                          icon: const FaIcon(
+                            FontAwesomeIcons.sun,
+                            color: Colors.white,
+                            size: 22,
+                          ),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Color(0xFFd2ddec), width: 1.0),
-                          borderRadius: BorderRadius.circular(6),
+                        IconButton(
+                          alignment: Alignment.topRight,
+                          onPressed: () {},
+                          icon: const FaIcon(
+                            FontAwesomeIcons.userGroup,
+                            color: Colors.white,
+                            size: 22,
+                          ),
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Color(0xFFd2ddec), width: 1.0),
-                          borderRadius: BorderRadius.circular(6),
+                        IconButton(
+                          alignment: Alignment.topRight,
+                          onPressed: () {},
+                          icon: const FaIcon(
+                            FontAwesomeIcons.boltLightning,
+                            color: Colors.white,
+                            size: 22,
+                          ),
                         ),
-                        hintText: 'Egg, 2 packs',
-                        hintStyle: Theme.of(context).textTheme.bodyText1?.apply(
-                              color: const Color(0xFFd2ddec),
-                            ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 4)),
-                    style: Theme.of(context).textTheme.bodyText1,
+                      ],
+                    )
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 61, bottom: 96),
+                  child: Text(
+                    widget.name,
+                    style: Theme.of(context).textTheme.displayLarge,
+                    textAlign: TextAlign.center,
                   ),
                 ),
-                const SizedBox(
-                  width: 4,
-                ),
-                OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                      primary: Colors.black, //change colour here
-                      padding: EdgeInsets.zero,
-                      fixedSize: const Size(28, 28)),
-                  child: Icon(
-                    Icons.bolt_outlined,
-                    color: Colors.yellowAccent[700],
-                    size: 22,
-                  ),
+                Row(
+                  children: [
+                    const FaIcon(
+                      FontAwesomeIcons.clock,
+                      color: Colors.white,
+                      size: 13,
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    Text(
+                      " Updated 16 minutes ago by Me ",
+                      style: Theme.of(context)
+                          .textTheme
+                          .caption
+                          ?.copyWith(color: Colors.white),
+                    )
+                  ],
                 )
               ],
             ),
@@ -127,7 +140,9 @@ class ItemScreenState extends State<ItemsScreen> {
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.zero,
+            itemCount: widget.items.length,
             itemBuilder: (context, index) {
+              final item = widget.items[index];
               return Column(
                 children: [
                   Row(
@@ -135,16 +150,14 @@ class ItemScreenState extends State<ItemsScreen> {
                     children: [
                       Expanded(
                         child: ListItem(
-                          name: "Item $index",
-                          color: Color((math.Random().nextDouble() * 0xFFFFFF)
-                                  .toInt())
-                              .withOpacity(1.0),
+                          name: item.name,
+                          color: item.color,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Icon(
-                          Icons.bolt_outlined,
+                        child: FaIcon(
+                          FontAwesomeIcons.boltLightning,
                           color: Colors.yellow[700],
                           size: 22,
                         ),
