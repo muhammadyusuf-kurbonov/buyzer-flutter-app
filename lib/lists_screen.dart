@@ -1,7 +1,6 @@
 import 'package:buyzer/components/card_wrapper.dart';
 import 'package:buyzer/components/list_item.dart';
-import 'package:buyzer/header.dart';
-import 'package:buyzer/list_item.dart';
+import 'package:buyzer/components/list_screen/listscreen_header.dart';
 import 'package:buyzer/repository/lists_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
