@@ -32,15 +32,17 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: WebViewContainer("https://buyzer.pages.dev/"),
+      home: const WebViewContainer(
+        url: "https://buyzer.pages.dev/",
+      ),
     );
   }
 }
 
 class WebViewContainer extends StatefulWidget {
-  final url;
+  final String url;
 
-  WebViewContainer(this.url);
+  const WebViewContainer({Key? key, required this.url}) : super(key: key);
 
   @override
   createState() => _WebViewContainerState();
@@ -107,8 +109,7 @@ class _WebViewContainerState extends State<WebViewContainer> {
         setState(() {
           _currentURI = null;
           if (err is FormatException) {
-          } else {
-          }
+          } else {}
         });
       });
     }
@@ -130,16 +131,19 @@ class _WebViewContainerState extends State<WebViewContainer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        Expanded(
-            child: WebView(
-          key: _key,
-          javascriptMode: JavascriptMode.unrestricted,
-          initialUrl: _currentURI.toString(),
-          userAgent: 'Buyzer App v1.0',
-        ))
-      ],
-    ));
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+                child: WebView(
+              key: _key,
+              javascriptMode: JavascriptMode.unrestricted,
+              initialUrl: _currentURI.toString(),
+              userAgent: 'Buyzer App v1.0',
+            ))
+          ],
+        ),
+      ),
+    );
   }
 }
