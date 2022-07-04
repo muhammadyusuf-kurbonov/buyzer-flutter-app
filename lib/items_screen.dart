@@ -1,3 +1,4 @@
+import 'package:buyzer/components/list_item.dart';
 import 'package:buyzer/list_item.dart';
 import 'package:buyzer/repository/items_reporitory.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,8 @@ class ItemScreenState extends State<ItemsScreen> {
         Container(
           color: widget.color,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24)
+                .add(MediaQuery.of(context).viewPadding),
             child: Column(
               children: [
                 Row(
@@ -72,7 +74,8 @@ class ItemScreenState extends State<ItemsScreen> {
                             color: Colors.white,
                             size: 22,
                           ),
-                        ),IconButton(
+                        ),
+                        IconButton(
                           alignment: Alignment.topRight,
                           onPressed: () {},
                           icon: const FaIcon(
@@ -149,7 +152,7 @@ class ItemScreenState extends State<ItemsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: ListItem(
+                        child: ItemWidget(
                           name: item.name,
                           color: item.color,
                         ),

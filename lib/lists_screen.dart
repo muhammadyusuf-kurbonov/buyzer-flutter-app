@@ -1,10 +1,12 @@
 import 'package:buyzer/components/card_wrapper.dart';
+import 'package:buyzer/components/list_item.dart';
 import 'package:buyzer/header.dart';
 import 'package:buyzer/list_item.dart';
 import 'package:buyzer/repository/lists_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import 'components/list_screen/listscreen_header.dart';
 import 'items_screen.dart';
 
 class ListsScreen extends StatelessWidget {
@@ -60,7 +62,7 @@ class ListsScreen extends StatelessWidget {
                               padding: EdgeInsets.zero,
                             ),
                           ]),
-                      child: ListItem(
+                      child: ItemWidget(
                         name: list.name,
                         color: list.color,
                         subtitle: list.items.join(", "),
